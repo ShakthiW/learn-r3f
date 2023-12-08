@@ -2,6 +2,9 @@
 
 This project is a demonstration of using [React Three Fiber](https://github.com/pmndrs/react-three-fiber), a React renderer for Three.js, to create 3D animations in web applications. It explores various 3D objects, materials, and animations using the React Three Fiber library along with additional libraries like [@react-three/drei](https://github.com/react-spring/drei) and [leva](https://github.com/pmndrs/leva).
 
+## What is react three fiber
+React Three Fiber is a library that bridges the gap between React, a popular JavaScript library for building user interfaces, and Three. js. It allows you to create 3D scenes using familiar React concepts, such as components and state management. React Three Fiber abstracts many of the complexities of ThreeJS.
+
 ## Project Overview
 
 - **Components:**
