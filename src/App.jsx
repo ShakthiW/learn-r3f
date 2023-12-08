@@ -8,6 +8,7 @@ import {
   useHelper,
 } from "@react-three/drei";
 import { DirectionalLightHelper } from "three";
+import { useControls } from "leva";
 
 // creating a compo[nent for the 3d object (box)
 const Cube = ({ position, size, color }) => {
@@ -89,7 +90,17 @@ const Taurus = ({ position, size, color }) => {
 };
 
 // creating a component for the 3d object (TaurusKnot)
-const TaurusKnot = ({ position, args, color }) => {
+const TaurusKnot = ({ position, args }) => {
+  const { color, radius } = useControls({
+    color: "lightblue",
+    radius: {
+      value: 1,
+      min: 0,
+      max: 10,
+      step: 0.5,
+    },
+  });
+
   const ref = useRef();
 
   // useFrame((state, delta) => {
@@ -102,15 +113,25 @@ const TaurusKnot = ({ position, args, color }) => {
 
   return (
     <mesh position={position} ref={ref}>
-      <torusKnotGeometry args={args} />
+      <torusKnotGeometry args={[radius, ...args]} />
       {/* <meshStandardMaterial color={color} /> */}
-      <MeshWobbleMaterial factor={5} speed={2} />
+      <MeshWobbleMaterial factor={5} speed={2} color={color} />
     </mesh>
   );
 };
 
 const Scene = () => {
   const directionalLightRef = useRef();
+
+  const { lightColor, lightIntensity } = useControls({
+    lightColor: "white",
+    lightIntensity: {
+      value: 0.5,
+      min: 0,
+      max: 5,
+      step: 0.1,
+    },
+  });
 
   useHelper(directionalLightRef, DirectionalLightHelper, 0.5, "white");
 
@@ -120,6 +141,8 @@ const Scene = () => {
       <directionalLight
         position={[0, 0, 2]}
         ref={directionalLightRef}
+        color={lightColor}
+        intensity={lightIntensity}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -142,8 +165,7 @@ const Scene = () => {
       {/* <Taurus position={[4, 0, 0]} args={[0.8, 0.1, 30, 30]} color={"blue"} /> */}
       <TaurusKnot
         position={[0, 0, 0]}
-        args={[1, 0.1, 1000, 50]}
-        color={"green"}
+        args={[0.1, 1000, 50]}
       />
       <OrbitControls enableZoom={false} />
     </>
@@ -152,7 +174,7 @@ const Scene = () => {
 
 const App = () => {
   return (
-    <Canvas shadowMap>
+    <Canvas shadow-map>
       <Scene />
     </Canvas>
   );
